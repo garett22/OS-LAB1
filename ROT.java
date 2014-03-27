@@ -1,30 +1,35 @@
+package zadanie1SO;
+
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class ROT {
-	int k; //Kwant czasu
-	List<Proces> cpu=new ArrayList<Proces>(); //Rot
-	List<Integer> o=new ArrayList<Integer>(); //czasy Oczekiwañ
-	
-	ROT(int k){
-		this.k=k;
+	int k; // Kwant czasu
+	ArrayList<Proces> cpu = new ArrayList<Proces>(); // Rot
+	ArrayList<Integer> o = new ArrayList<Integer>(); // czasy Oczekiwañ
+	long zegar = 0;
+
+	ROT(int k) {
+		this.k = k;
 	}
-	
-	void dodaj(int t, long s){
-		cpu.add(new Proces(t,s));
+
+	void dodaj(int t, long s) {
+		cpu.add(new Proces(t, s));
 	}
-	
-	long wykonaj(long t){ //otrzymuje aktualny czas procesora
-		Iterator<Proces> it=cpu.iterator();
-		if (it.hasNext()){
-			Proces p=it.next();
-			it.remove();
-			p.t-=k;
-			if (p.t>0) cpu.add(p); 
-				else o.add((int)(t-p.s)); //long-long=>int
-			return t+k; //aktualny czas + czas wykonywania procesu 
+
+	void wykonaj() {
+		if (!cpu.isEmpty()) {
+			Proces p = cpu.get(0);
+			cpu.remove(0);
+			if (p.getT() >= k) {
+				p.setT(p.getT() - k);
+				zegar += k;
+				cpu.add(p);
+			} else {
+				zegar += p.getT();
+				o.add((int) (zegar - p.getS()));
+			}
+
+			o.add((int) (zegar - p.getS())); // long-long=>int
 		}
-		else return 0; //nie wykonano procesu, wiêc wykorzystany czas procesora =0
 	}
 }
