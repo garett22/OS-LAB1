@@ -1,31 +1,25 @@
-package zadanie1SO;
-// dodaæ obs³ugê wyw³aszczania
-
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class SJF {
-	SortedSet<Proces> cpu=new TreeSet<Proces>(); //Sjf
-	ArrayList<Integer> o=new ArrayList<Integer>(); //czasy Oczekiwañ
-	long zegar=0;
-	
-	SJF(){}
-	
-	void dodaj(int t, long s){
-		cpu.add(new Proces(t,s));
+	ArrayList<Proces> cpu = new ArrayList<Proces>(); // Sjf
+	ArrayList<Integer> o = new ArrayList<Integer>(); // czasy Oczekiwañ
+
+	SJF() {
 	}
-	
-	void wykonaj(){ 
-		Iterator<Proces> it=cpu.iterator();
-		if (it.hasNext()){
-			Proces p=it.next();
-			it.remove();
-			zegar+=p.getT();
-			o.add((int)(zegar-p.getS())); //long-long=>int
+
+	void dodaj(int t, long s) {
+		cpu.add(new Proces(t, s));
+	}
+
+	void wykonaj(long zegar) { //wykonanie jednego taktu
+		if (!cpu.isEmpty()) {
+			Proces p = cpu.get(0);
+			cpu.remove(0);
+			if (p.getT() > 1) {
+				p.setT(p.getT() - 1);
+				cpu.add(0, p);
+			} else
+				o.add((int) (zegar - p.getS())); // long-long=>int
 		}
 	}
-	
-	void wywlaszcz(){}
 }
