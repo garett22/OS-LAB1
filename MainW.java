@@ -1,6 +1,11 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class MainW {
 
@@ -25,20 +30,52 @@ public class MainW {
 	public static ArrayList<Proces> doDodania = new ArrayList<Proces>();
 	public static long zegar = 0;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException,
+			IOException {
 		SJF s = new SJF();
-		SJF sw = new SJF(); //z wywlaszczaniem
-		
-		//==================================================================
-		//losowanie procesów
+		SJF sw = new SJF(); // z wywlaszczaniem
+
+		// ==================================================================
+		// losowanie procesów
 		for (int i = 0; i < 20; i++) {
 			int time = (int) (20 * Math.random()); // d³ugoœæ
 			s.dodaj(time, 0);
 			sw.dodaj(time, 0);
 		}
+
+		try (BufferedReader br = new BufferedReader(new FileReader(
+				"Scenariusz.txt"))) {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);
+				// sb.append(",");
+				line = br.readLine();
+
+			}
+
+			String everything = sb.toString();
+
+			System.out.println(everything);
+
+			StringTokenizer stringtokenizer = new StringTokenizer(everything,
+					",");
+			while (stringtokenizer.hasMoreElements()) {
+				// System.out.println(stringtokenizer.nextToken());
+				
+				int pomocnik = Integer.valueOf(stringtokenizer.nextToken());
+
+				s.dodaj(pomocnik, 0);
+				sw.dodaj(pomocnik, 0);
+				stringtokenizer.nextToken();
+
+			}
+		}
+
 		Collections.sort(s.cpu);
 		Collections.sort(sw.cpu);
-		//dodawanie procesów do póŸniejszego uruchomienia
+		// dodawanie procesów do póŸniejszego uruchomienia
 		System.out.println("wygenerowano grupê procesów");
 		int a = 1;
 		Scanner sc = new Scanner(System.in);
@@ -53,13 +90,14 @@ public class MainW {
 			}
 		}
 		Collections.sort(doDodania);
-		//==================================================================
-		
+		// ==================================================================
+
 		while (!s.cpu.isEmpty()) {
 			// wykonaj jeden takt, sprawdŸ czy nie trzeba dodaæ
 			if (!doDodania.isEmpty()) {
-				if (doDodania.get(0).getR() == zegar) { //dodaj, ale po pierwszym procesie
-					Proces p=s.cpu.get(0);
+				if (doDodania.get(0).getR() == zegar) { // dodaj, ale po
+														// pierwszym procesie
+					Proces p = s.cpu.get(0);
 					s.cpu.remove(0);
 					s.cpu.add(new Proces(doDodania.get(0).getT(), zegar));
 					Collections.sort(s.cpu);
@@ -70,7 +108,7 @@ public class MainW {
 					Collections.sort(s.cpu);
 				}
 				doDodania.remove(0);
-			}			
+			}
 			s.wykonaj(zegar);
 			sw.wykonaj(zegar);
 			zegar++;
