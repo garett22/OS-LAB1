@@ -20,7 +20,7 @@ public class MainW {
 	}
 
 	static void srednia(ArrayList<Integer> lista) {
-		int suma = 0;
+		double suma = 0;
 		for (int i = 0; i < lista.size(); i++) {
 			suma += lista.get(i);
 		}
@@ -36,15 +36,9 @@ public class MainW {
 		SJF sw = new SJF(); // z wywlaszczaniem
 
 		// ==================================================================
-		// losowanie procesów
-		for (int i = 0; i < 20; i++) {
-			int time = (int) (20 * Math.random()); // d³ugoœæ
-			s.dodaj(time, 0);
-			sw.dodaj(time, 0);
-		}
 
 		try (BufferedReader br = new BufferedReader(new FileReader(
-				"Scenariusz.txt"))) {
+				"wywl.txt"))) {
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 
@@ -60,7 +54,7 @@ public class MainW {
 			System.out.println(everything);
 
 			StringTokenizer stringtokenizer = new StringTokenizer(everything,
-					",");
+					" ");
 			while (stringtokenizer.hasMoreElements()) {
 				// System.out.println(stringtokenizer.nextToken());
 				
@@ -89,7 +83,7 @@ public class MainW {
 				doDodania.add(new Proces(x, 0, ((long) y)));
 			}
 		}
-		Collections.sort(doDodania);
+		
 		// ==================================================================
 
 		while (!s.cpu.isEmpty()) {
@@ -105,12 +99,12 @@ public class MainW {
 				}
 				if (doDodania.get(0).getR() == zegar) {
 					sw.cpu.add(new Proces(doDodania.get(0).getT(), zegar));
-					Collections.sort(s.cpu);
+					Collections.sort(sw.cpu);
 				}
 				doDodania.remove(0);
 			}
-			s.wykonaj(zegar);
-			sw.wykonaj(zegar);
+			s.wykonaj();
+			sw.wykonaj();
 			zegar++;
 		}
 

@@ -1,4 +1,4 @@
-package zadanie1SO;
+
 
 import java.util.ArrayList;
 
@@ -28,8 +28,6 @@ public class ROT {
 				zegar += p.getT();
 				o.add((int) (zegar - p.getS()));
 			}
-
-			o.add((int) (zegar - p.getS())); // long-long=>int
 		}
 	}
 }

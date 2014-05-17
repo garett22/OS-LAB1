@@ -1,3 +1,6 @@
+//obs³uga scenariuszy
+//wyw³aszczanie w sjf
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,15 +36,8 @@ public class Main {
 		SJF s = new SJF();
 		ROT r = new ROT(5); // d³ugoœæ czasu przydzielonego na wykonanie procesu
 							// (wstêpnie 5)
-/*		for (int i = 0; i < 20; i++) {
-			int time = (int) (20 * Math.random()); // d³ugoœæ
-			f.dodaj(time, f.zegar);
-			s.dodaj(time, s.zegar);
-			r.dodaj(time, r.zegar);
-		}
-*/
-		try (BufferedReader br = new BufferedReader(new FileReader(
-				"Scenariusz1.txt"))) {
+
+		try (BufferedReader br = new BufferedReader(new FileReader("rand.txt"))) {
 			StringBuilder sb = new StringBuilder();
 			String line = br.readLine();
 
@@ -66,9 +62,9 @@ public class Main {
 						.nextToken());
 
 				f.dodaj(dlugosc, czas_rozpoczecia);
-				s.dodaj(dlugosc, czas_rozpoczecia);
 				r.dodaj(dlugosc, czas_rozpoczecia);
-
+				s.dodaj(dlugosc, czas_rozpoczecia);
+				Collections.sort(s.cpu);
 			}
 		}
 
@@ -93,6 +89,29 @@ public class Main {
 		System.out.println("Statystyka dla ROT");
 		srednia(r.o);
 		mediana(r.o);
+
+		/*
+		 * Collections.sort(listaProcesy, new Comparator<Proces>() { public int
+		 * compare(Proces o1, Proces o2) { if (o1.getS() == o2.getS()) return 0;
+		 * return o1.getS() < o2.getS() ? -1 : 1; } });
+		 */
+
+		/*
+		 * for (licznik_zegara = 0; licznik_zegara < 10; licznik_zegara++) {
+		 * 
+		 * System.out.println(listaProcesy.size());
+		 * 
+		 * Proces e = listaProcesy.get(0);
+		 * 
+		 * kolejka.add(e);
+		 * 
+		 * listaProcesy.remove(0);
+		 * 
+		 * // System.out.println(kolejka.get(0));
+		 * System.out.println(kolejka.get(kolejka.size() - 1));
+		 * 
+		 * }
+		 */
 	}
 
 }
